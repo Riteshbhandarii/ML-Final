@@ -1,74 +1,94 @@
-# Bank Marketing ANN Model
+# Bank Marketing Prediction with Artificial Neural Networks
 
 ## Project Overview
-This project develops a neural network model to predict whether a bank marketing campaign will successfully convince a client to subscribe to a term deposit. The model analyzes various client attributes, communication details, and economic indicators to make these predictions.
+This project aims to predict whether a client will subscribe to a term deposit based on data from a bank’s marketing campaigns. Using an Artificial Neural Network (ANN), we leverage the Bank Marketing dataset from the UCI Machine Learning Repository to build a robust classification model.
 
-## Dataset Description
-The dataset contains information from a Portuguese banking institution's direct marketing campaigns. It includes:
+## Dataset
+- **Source**: [UCI Machine Learning Repository - Bank Marketing](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing)
+- **Size**: 41,188 instances
+- **Features**: 20 input features (10 numerical, 10 categorical)
+- **Target**: Binary (`yes`/`no`) indicating subscription to a term deposit
 
-- **Client demographics**: age, job, marital status, education, etc.
-- **Contact information**: communication type, month and day of contact
-- **Campaign details**: number of contacts, previous campaign outcomes
-- **Economic indicators**: employment variation rate, consumer price index, etc.
-- **Target variable**: whether the client subscribed to a term deposit (yes/no)
+## Methodology
+1. **Data Loading**:
+   - Loaded with error handling to ensure robustness.
+   
+2. **Cleaning & Preprocessing**:
+   - Removed duplicates after inspection.
+   - Imputed 'unknown' values with mode for most features; used domain knowledge for 'default'.
 
-## Project Structure
-1. **Data Loading & Exploration**: Examination of data characteristics, missing values and distributions
-2. **Data Preprocessing**: 
-   - Handling unknown values
-   - Feature scaling with StandardScaler and MinMaxScaler
-   - Categorical encoding (one-hot and cyclical encoding)
-3. **Feature Engineering**:
-   - Cyclical encoding for month and education
-   - Feature selection based on correlation analysis
-   - Feature importance ranking using Random Forest
-4. **Model Development**:
-   - Neural network architecture with 3 hidden layers
-   - Regularization with dropout
-   - Binary classification with sigmoid activation
-5. **Model Training & Evaluation**:
-   - Cross-validation
-   - Hyperparameter tuning
-   - Performance metrics (accuracy, precision, recall, F1-score, ROC-AUC)
+3. **Exploratory Data Analysis (EDA)**:
+   - Visualized numerical features (e.g., histograms).
+   - Analyzed categorical features with bar plots (e.g., `job`, `education`).
 
-## Key Findings
-- Achieved 89.3% accuracy on test data
-- Important features include age, employment indicators, and campaign contact details
-- Model shows high precision (90%) but low recall (16%) for positive class
-- Economic indicators demonstrate strong correlation with term deposit subscription likelihood
+4. **Feature Engineering**:
+   - Applied standard scaling to numerical features and one-hot encoding to categorical features using a scikit-learn pipeline.
 
-## Model Performance
-- **Accuracy**: 89.3%
-- **AUC**: 0.76
-- **Precision** (class 1): 69%
-- **Recall** (class 1): 16%
-- **F1-score** (class 1): 26%
+5. **Feature Selection**:
+   - Used Recursive Feature Elimination (RFE) with a Random Forest Classifier to select the top 15 features.
+
+6. **Model Building**:
+   - Designed an ANN with Keras Tuner for hyperparameter optimization (e.g., layer sizes, dropout rates, learning rates).
+   - Addressed class imbalance with class weights.
+
+7. **Training & Evaluation**:
+   - Trained with 50 epochs and early stopping.
+   - Evaluated using AUC-ROC, precision, recall, and F1-score alongside accuracy.
+
+## Results
+- **Final Test AUC-ROC**: ~0.76 (varies slightly with tuning)
+- **Accuracy**: ~0.89
+- **Classification Report** (example from original run):
+  ```
+                precision    recall  f1-score   support
+           0       0.90      0.99      0.94      3636
+           1       0.69      0.16      0.26       482
+    accuracy                           0.89      4118
+   macro avg       0.79      0.58      0.60      4118
+weighted avg       0.87      0.89      0.86      4118
+  ```
+- **Key Insight**: The model excels at predicting non-subscribers but struggles with subscribers due to class imbalance.
+
+## How to Run
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Notebook**:
+   - Open `ML-Final-Improved.ipynb` in Jupyter Notebook or JupyterLab.
+   - Ensure `bank-additional-full.csv` is in the same directory.
+   - Execute all cells sequentially.
+
+## Dependencies
+- Python 3.11
+- pandas
+- numpy
+- scikit-learn
+- tensorflow
+- keras-tuner
+- matplotlib
+- seaborn
+
+## Files
+- `ML-Final-Improved.ipynb`: Main notebook with improved code.
+- `bank-additional-full.csv`: Dataset (download from UCI link).
+- `numerical_hist.png`, `job_distribution.png`, `education_distribution.png`, `roc_curve.png`, `training_history.png`: Generated plots.
 
 ## Future Improvements
-- Address class imbalance through resampling or class weights
-- Explore more complex feature engineering
-- Try ensemble methods or other model architectures
-- Optimize for business metrics (e.g., campaign ROI) rather than just accuracy
+- Experiment with SMOTE or oversampling to further address class imbalance.
+- Explore additional feature engineering (e.g., interaction terms).
+- Test alternative models (e.g., XGBoost, LightGBM) for comparison.
 
-## Requirements
-- Python 3.x
-- TensorFlow
-- Pandas
-- NumPy
-- Scikit-learn
-- Matplotlib
-- Seaborn
+## License
+This project is licensed under the MIT License.
 
-## Usage
-1. Load the dataset using pandas
-2. Run preprocessing steps to clean and transform data
-3. Train the model with the provided hyperparameters
-4. Evaluate model performance on test data
-5. Use the model to predict subscription likelihood for new marketing contacts
-
-## Business Application
-This model helps banking institutions optimize their marketing campaigns by:
-- Targeting clients with higher likelihood of subscription
-- Reducing unnecessary contacts to improve efficiency
-- Understanding key factors that influence subscription decisions
-- Adapting campaign strategies based on feature importance
+## Acknowledgments
+- Dataset provided by UCI Machine Learning Repository.
+- Built as part of a Machine Learning course final project.
