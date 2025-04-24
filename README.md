@@ -45,8 +45,10 @@ This project aims to predict whether a client will subscribe to a term deposit b
            1       0.69      0.16      0.26       482
     accuracy                           0.89      4118
    macro avg       0.79      0.58      0.60      4118
-weighted avg       0.87      0.89      0.86      4118
-  ```
+  weighted avg       0.87      0.89      0.86      4118 
+```
+```
+
 - **Key Insight**: The model excels at predicting non-subscribers but struggles with subscribers due to class imbalance.
 
 ## How to Run
